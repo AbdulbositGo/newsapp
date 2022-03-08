@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+
+{% block main %}
+
+<form enctype="multipart/form-data" method="post">
+    <div class="row g-3">
+        <h1 class="col-10">Create news</h1>
+        <button type="submit" class="btn btn-success mt-4 me-3 col-1" style="max-height: 40px; max-width: 80px;">Save</button>
+        <button type="reset" class="btn btn-danger mt-4 col-1" style="max-height: 40px; max-width: 80px;">Cancel</button>
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Title</label>
+        <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter the news title">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Content</label>
+        <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
+    </div>
+
+
+    <div class="row g-4 pt-2">
+        <div class="mb-3 col-4">
+            <label for="formFileMultiple" class="form-label">Image placement</label>
+            <input name="image" class="form-control" type="file" id="formFileMultiple" accept="image/*" multiple>
+        </div>
+        <div class="col-3 p-2">
+            <select class="form-select mt-4" required name="author">
+                <option selected disabled>choose this select author</option>
+                {% for author in authors %}
+                <option value="{{ author.id }}">{{ author.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-3 p-2">
+            <select class="form-select mt-4" required name="category">
+                <option selected disabled>choose this select category</option>
+                {% for category in categorys %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-check form-switch col-2 pt-3 mt-5">
+            <input name="is_published" value="True" class="form-check-input bg-success" type="checkbox"
+                id="flexSwitchCheckChecked" checked>
+            <label class="form-check-label" for="flexSwitchCheckChecked">Print the message</label>
+        </div>
+    </div>
+</form>
+{% endblock main %}

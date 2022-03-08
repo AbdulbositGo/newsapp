@@ -1,0 +1,64 @@
+{% extends "admin/base.html" %}
+
+{% block main %}
+
+<form enctype="multipart/form-data" method="post">
+    <div class="row g-3 mb-3">
+        <h1 class="col-9">Update news</h1>
+        <button type="submit" class="btn btn-success mt-4 me-3 col-1" style="max-height: 40px; width: 130px;">Save changes</button>
+        <button type="reset" class="btn btn-danger mt-4 col-1" style="max-height: 40px; max-width: 80px;">Cancel</button>
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Title</label>
+        <input required="required" name="uptitle" value="{{ news.title }}" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter the news title">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Content</label>
+        <textarea name="upcontent" class="form-control" id="exampleFormControlTextarea1"
+            rows="10">{{ news.content }}</textarea>
+    </div>
+
+    <div class="row g-4 pt-2">
+        <div class="mb-3 col-4">
+            {% if news.photo %}
+                <img style="height: 100px;" src="{{url_for('static', filename='upload/images/') ~ news.photo}}" class="img-thumbnail">
+                <a href="{{ url_for('update_news_view', action='delete_image', newsid=news.id, newsurl=news.slug  ) }}"><img style="height: 20px; position: relative; right: 30px; bottom: 33px;" src="{{ url_for('static', filename='images/x-button.svg') }}" alt=""></a>
+            {% else %}
+                <label for="formFileMultiple" class="form-label">Image placement</label>
+                <input name="upimage" class="form-control" type="file" accept="image/*" id="formFileMultiple" multiple>
+            {% endif %}
+        </div>
+        <div class="col-3 p-2">
+            <select class="form-select mt-4" required name="upauthor">
+                <option selected disabled>choose this select author</option>
+                {% for author in authors %}
+                    {% if author.id == news.author_id %}
+                        <option selected value="{{ author.id }}">{{ author.name }}</option>                    
+                    {% else %}
+                        <option value="{{ author.id }}">{{ author.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-3 p-2">
+            <select class="form-select mt-4" required name="upcategory">
+                <option selected disabled>choose this select category</option>
+                {% for category in categorys %}
+                    {% if news.category_id == category.id %}
+                        <option selected value="{{ category.id }}">{{ category.name }}</option>
+                    {% else %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-check form-switch col-2 pt-3 mt-5">
+            <input name="upis_published" value="True" class="form-check-input bg-success" type="checkbox"
+                id="flexSwitchCheckChecked" {% if news.is_published %} checked="checked" {% endif %}>
+            <label class="form-check-label" for="flexSwitchCheckChecked">Print the message</label>
+        </div>
+    </div>
+</form>
+
+{% endblock main %}

@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+
+{% block main %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for novelty in news %}
+        {% if novelty.is_published %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if novelty.photo %}
+                        <img src="{{ url_for('static', filename='upload/images/') ~ novelty.photo }}" class="card-img-top" alt="...">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/image-not-found.jpg') }}" class="card-img-top" alt="...">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ novelty.title | truncate(66) | safe }}</h5>
+                        <p class="card-text">{{ novelty.content | truncate(170) | safe }}</p>
+                    </div>
+                    <div class="card-footer" style="font-size: 12px; display:flex; justify-content:space-between; align-items: center;">
+                        <div>
+                            <span class="text-muted">Last updated: {{ novelty.date_time.strftime('%x | %X') }}</span>
+                            <br>
+                            <span class="text-muted">views: {{ novelty.views }}</span>
+                        </div>
+                        <a href="{{ url_for('single_news_view', newsid=novelty.id, newsurl=novelty.slug )}}"><button  type="button" class="btn btn-sm btn-primary">More</button></a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% include 'client/footer.html'%}
+{% endblock main %}
+

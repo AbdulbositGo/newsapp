@@ -1,0 +1,31 @@
+
+<h4 class="mb-4 mt-4">More views News</h4>
+<hr>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for most in more_views%}
+        <div class="col">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                {% if most.photo %}
+                  <img style="max-height: 70px;" src="{{ url_for('static', filename='upload/images/') ~ most.photo }}">
+                {% else %}
+                  <img style="max-height: 70px;" src="{{ url_for('static', filename='images/image-not-found.jpg') }}">
+                {% endif %}
+              </div>
+              <div class="col-md-8">
+                <div style="font-size: 12px;">
+                  <h5>{{ most.title | truncate(30) }}</h5>
+                  <p class="card-text">{{ most.content | truncate(60)}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer" style="font-size: 12px; display:flex; justify-content:space-between; align-items: center;">
+              <small class="text-muted">Last updated 3 mins ago</small>
+              <a href="{{ url_for('single_news_view', newsid=most.id, newsurl=most.slug )}}"><button style="font-size: 12px;" type="button" class="btn btn-sm btn-primary">More</button></a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>

@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+
+{% block main %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Author</th>
+            <th scope="col">Category</th>
+            <th scope="col">Thumbnail</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Views</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody >
+            {% for novelty in news %}
+                <tr>
+                    <th >{{novelty.id}}</th>
+                    <td>{{novelty.title | truncate(30) }}</td>
+                    <td>{{novelty.content | truncate(25) }}</td>
+                    <td>
+                        {% for author in authors %}
+                            {% if novelty.author_id == author.id %}
+                                {{author.name}}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for category in categorys %}
+                            {% if novelty.category_id == category.id %}
+                                {{category.name}}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if novelty.photo %}
+                            <img style="height: 50px ;" src="{{url_for('static', filename='upload/images/') ~ novelty.photo}}" alt=""></td>
+                        {% else %}
+                            <font>not photo</font>
+                        {% endif %}
+                    <td>{{novelty.date_time.strftime('%d/%b, %H:%M')}}</td>
+                    <td>{{novelty.views}}</td>
+                    <td>
+                        {% if novelty.is_published %}
+                            <a href="{{ url_for('admin_news_view', action='make_passive', id=novelty.id) }}"><img style="max-width: 25px;" src="{{ url_for('static', filename='icons/active.png') }}" alt=""></a>
+                        {% else %}
+                            <a href="{{ url_for('admin_news_view', action='make_active', id=novelty.id) }}"><img style="max-width: 25px;" src="{{ url_for('static', filename='icons/passive.png') }}" alt=""></a>
+                        {% endif %}
+                    <td><a href="{{ url_for('update_news_view', newsid=novelty.id, newsurl=novelty.slug) }}">
+                        <button type="button" class="btn btn-primary">Edit</button>
+                    </a></td>
+                    <td><a href="{{ url_for('admin_news_view', action='delete', id=novelty.id) }}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock main %}

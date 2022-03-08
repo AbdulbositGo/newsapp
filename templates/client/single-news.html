@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+
+{% block main %}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <img src="{{ url_for('static', filename='upload/images/') ~ single_news.photo}}" class="card-img-top pb-3" alt="car image">
+        <h5 class="card-title">{{ single_news.title }}</h5>
+        <p class="card-text">{{ single_news.content }}</p>
+        <span class="card-text"><small class="text-muted me-3">Lest update: {{ single_news.date_time.strftime("%x | %X") }}</small></span>
+        <span class="card-text"><small class="text-muted">views: {{ single_news.views }}</small></span>
+    </div>
+</div>
+
+{% endblock main %}
